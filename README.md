@@ -12,7 +12,8 @@ Desplegar una aplicación en un clúster Kubernetes de alta disponibilidad utili
 - Samuel Salazar Salazar
 - Juan Sebastian Camacho
 
-### Profesor: Edwin Montoya - emontoya@eafit.edu.co
+### Profesor: 
+Edwin Montoya - emontoya@eafit.edu.co
 ---
 ### LINK DE LA SUSTENTACIÓN
 
