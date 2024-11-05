@@ -27,6 +27,8 @@ El proyecto se basa en un CMS desplegado en un cluster de kubernetes creados baj
 ### 1.1 Aspectos cumplidos del proyecto
 
 -  Cluster de kubernetes implementando microk8s
+- Dominio propio
+- Configuracion de certificado SSL
 -  6 nodos creados
   - Master
   - Wordpress 1
@@ -34,8 +36,7 @@ El proyecto se basa en un CMS desplegado en un cluster de kubernetes creados baj
   - NFS
   - MYSQL 1
   - MYSQL 2
-- Dominio propio
-- Configuracion de certificado SSL
+
   
 ---
 ### 1.2 Aspectos no cumplidos
