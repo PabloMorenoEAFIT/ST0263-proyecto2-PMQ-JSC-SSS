@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress_app
+    ports:
+      - "8080:80"  # Cambia el puerto si es necesario
+    environment:
+      WORDPRESS_DB_HOST: mysql_primary:3306  # Cambia a la IP de MySQL si está en otra máquina
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppassword
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - mysql_primary
+    networks:
+      - wp_network
+
+  mysql_primary:
+    image: mysql:5.7
+    container_name: mysql_primary
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - wp_network
+
+volumes:
+  mysql_data:
+
+networks:
+  wp_network:
+    driver: bridge
