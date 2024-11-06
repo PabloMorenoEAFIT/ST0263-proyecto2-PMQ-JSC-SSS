@@ -49,6 +49,7 @@ El proyecto se basa en un CMS desplegado en un cluster de kubernetes creados baj
 
 - Cluster configurado con microk8s
 - 5 instancias creadas
+  - Instancias tipo e2-large (40gb de memoria)
   - 1 master
   - 2 Wordpress
   - 1 NFS
@@ -56,3 +57,14 @@ El proyecto se basa en un CMS desplegado en un cluster de kubernetes creados baj
  
 Cada instancia está configurada para ser autoescalable según demanda del sistema.
 
+---
+### 3.1 Ejecución
+Configuraciones del cluster 
+
+```bash 
+sudo snap install microk8s --classic
+sudo usermod -a -G microk8s pmorenoq
+mkdir -p ~/.kube
+sudo chown -R $(whoami) ~/.kube
+newgrp microk8s
+sudo microk8s config > ~/.kube/config
