@@ -63,7 +63,7 @@ Configuraciones del cluster (Aplicable para cada nodo)
 
 ```bash 
 sudo snap install microk8s --classic
-sudo usermod -a -G microk8s pmorenoq
+sudo usermod -a -G microk8s <user>
 mkdir -p ~/.kube
 sudo chown -R $(whoami) ~/.kube
 newgrp microk8s
