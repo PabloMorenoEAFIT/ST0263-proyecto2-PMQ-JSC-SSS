@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:80"  # Cambia el puerto si es necesario
     environment:
-      WORDPRESS_DB_HOST: mysql_primary:3306  # Cambia a la IP de MySQL si está en otra máquina
+      WORDPRESS_DB_HOST: 10.128.0.21:3306  # Cambia a la IP de MySQL si está en otra máquina
       WORDPRESS_DB_USER: wpuser
       WORDPRESS_DB_PASSWORD: wppassword
       WORDPRESS_DB_NAME: wordpress
