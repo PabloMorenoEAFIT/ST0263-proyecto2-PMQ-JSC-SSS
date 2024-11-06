@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-primary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-primary
+  template:
+    metadata:
+      labels:
+        app: mysql-primary
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: instance-group-p2-telematica-p2-wzfq  # Nodo MYQL1
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "rootpassword"
+        - name: MYSQL_DATABASE
+          value: "wordpress"  # Base de datos para WordPress
+        - name: MYSQL_USER
+          value: "wpuser"
+        - name: MYSQL_PASSWORD
+          value: "wppassword"
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-data
+        emptyDir: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-secondary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-secondary
+  template:
+    metadata:
+      labels:
+        app: mysql-secondary
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: instance-group-p2-telematica-p2-zxhr  # Nodo MYQL2
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "rootpassword"
+        - name: MYSQL_DATABASE
+          value: "another_database"  # Otra base de datos
+        - name: MYSQL_USER
+          value: "otheruser"
+        - name: MYSQL_PASSWORD
+          value: "otherpassword"
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-data
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-primary-service
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: mysql-primary
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-secondary-service
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: mysql-secondary
