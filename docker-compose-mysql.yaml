@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  mysql_primary:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - wp_network
+
+volumes:
+  mysql_data:
+
+networks:
+  wp_network:
+    driver: bridge
