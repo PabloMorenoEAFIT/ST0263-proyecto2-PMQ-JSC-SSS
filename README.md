@@ -59,7 +59,7 @@ Cada instancia está configurada para ser autoescalable según demanda del siste
 
 ---
 ### 3.1 Ejecución
-Configuraciones del cluster 
+Configuraciones del cluster (Aplicable para cada nodo)
 
 ```bash 
 sudo snap install microk8s --classic
@@ -68,3 +68,53 @@ mkdir -p ~/.kube
 sudo chown -R $(whoami) ~/.kube
 newgrp microk8s
 sudo microk8s config > ~/.kube/config
+```
+---
+### 3.2 Desarrollo de los nodos
+### 3.2.1 Master
+creación del cluster
+```bash
+newgrp microk8s
+```
+
+Iniciar el cluster
+```bash
+microk8s status --wait-ready
+```
+
+Se debe esperar a que muestre información del cluster (cuales servicios están habilitados y el estado general)
+```bash
+microk8s enable <service>
+```
+
+
+Reiniciar el servicio
+```bash
+microk8s stop
+microk8s start
+```
+
+Revisar que no hayan nodos en el cluster
+```bash
+microk8s kubectl get no
+
+# En caso de encontrar una dirección no deseada
+microk8s remove-node <Ip-a-borrar>
+```
+
+Crear 'Tokens' de acceso al cluster 
+Cada nodo adicional debe ingresar con un toke único al cluster
+```bash
+microk8s add-node
+
+# Debe retornar algo como lo siguiente:
+# 'From the node you wish to join to this cluster, run the following:'
+# 'microk8s join <IP-Master-Node>:25000/<KEY>'
+```
+
+
+
+### 3.2.2 Slave 1 y 2 (Wordpress)
+### 3.2.3 MYSQL 1 y 2
+### 3.2.4 NFS
+
