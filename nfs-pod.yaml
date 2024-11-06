@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: wordpress-pod
+spec:
+  containers:
+  - name: wordpress
+    image: wordpress:latest
+    volumeMounts:
+    - mountPath: /var/www/html  # El punto de montaje en el contenedor
+      name: wordpress-storage
+  volumes:
+  - name: wordpress-storage
+    persistentVolumeClaim:
+      claimName: nfs-pvc
