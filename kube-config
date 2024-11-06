@@ -1,0 +1,5 @@
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://10.128.0.24:16443
+  name: microk8s-cluster
