@@ -112,9 +112,84 @@ microk8s add-node
 # 'microk8s join <IP-Master-Node>:25000/<KEY>'
 ```
 
-
-
 ### 3.2.2 Slave 1 y 2 (Wordpress)
-### 3.2.3 MYSQL 1 y 2
-### 3.2.4 NFS
+Descargar el archvio .yaml ubicado en el repositorio 
+El archivo debe estar en el formato de kubernetes y no de docker
+(para nuestro caso es wordpress-deployment.yaml)
+```bash
+wget https://raw.githubusercontent.com/PabloMorenoEAFIT/ST0263-proyecto2-PMQ-JSC-SSS/refs/heads/main/wordpress-deployment.yaml
+```
 
+Aplicar el archivo en el cluster
+```bash
+kubectl apply -f wordpress-deployment.yaml
+```
+
+Verificar que los pods se esten ejecutando en los nodos dedicados
+```bash
+kubectl get pods -o wide
+```
+
+### 3.2.3 MYSQL 1 y 2
+Descargar el archvio .yaml ubicado en el repositorio 
+El archivo debe estar en el formato de kubernetes y no de docker
+(para nuestro caso es mysql-deployment.yaml)
+```bash
+wget https://raw.githubusercontent.com/PabloMorenoEAFIT/ST0263-proyecto2-PMQ-JSC-SSS/refs/heads/main/mysql-deployment.yaml
+```
+
+Aplicar el archivo en el cluster
+```bash
+kubectl apply -f mysql-deployment.yaml
+```
+
+Verificar que los pods se esten ejecutando en los nodos dedicados
+```bash
+kubectl get pods -o wide
+```
+
+Verificar los Persistent Volumes (PVs) y Persistent Volume Claims (PVCs)
+```bash
+wget https://raw.githubusercontent.com/PabloMorenoEAFIT/ST0263-proyecto2-PMQ-JSC-SSS/refs/heads/main/persistent-volume.yaml
+```
+
+Aplicar el archivo en el cluster
+```bash
+kubectl apply -f persistent-volume.yaml
+```
+
+### 3.2.4 NFS
+Instalar el servidor NFS
+```bash
+sudo apt-get install nfs-kernel-server
+```
+
+Configurar el directorio
+```bash
+sudo vim /etc/exports
+
+# Modificar el archivo agregado la sigueinte linea:
+# /srv/nfs/wordpress <IP-Wordpress-1>(rw,sync,no_subtree_check) <IP-Wordpress-2>(rw,sync,no_subtree_check)
+```
+
+Exportar los directorios
+```bash
+sudo exportfs -ra
+```
+
+Iniciar y habilitar el servicio
+```bash
+sudo systemctl start nfs-server
+```
+
+En caso de tener restricciones de Firewall por la VPC, para permitir el acceso del NFS (usando ufw)
+```bash
+sudo ufw allow from <IP-wordpress> to any port nfs
+```
+
+Agregar el servicio al cluster
+```bash
+wget https://raw.githubusercontent.com/PabloMorenoEAFIT/ST0263-proyecto2-PMQ-JSC-SSS/refs/heads/main/nfs-pod.yaml
+
+kubectl apply -f nfs-pvc.yaml
+```
