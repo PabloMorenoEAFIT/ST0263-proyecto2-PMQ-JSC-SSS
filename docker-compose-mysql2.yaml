@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mysql_replica:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppassword
+      MYSQL_MASTER_HOST: "<10.128.0.21>"    # Sustituye <IP_DE_MYSQL1> con la IP del nodo MYSQL1
+      MYSQL_MASTER_USER: "root"
+      MYSQL_MASTER_PASSWORD: "rootpassword"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - wp_network
+
+volumes:
+  mysql_data:
+
+networks:
+  wp_network:
+    driver: bridge
